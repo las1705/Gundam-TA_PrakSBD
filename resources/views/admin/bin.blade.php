@@ -52,8 +52,7 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="mt-1">
+
         <!-- Button trigger modal -->
         <button type="button" class="btn btn-danger" data-bs-toggle="modal"
                 data-bs-target="#deleteAllModal">

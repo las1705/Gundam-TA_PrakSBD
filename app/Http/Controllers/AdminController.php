@@ -10,7 +10,6 @@ class AdminController extends Controller
 {
     public function viewHome(Request $request)
     {
-
         $user = session('user');
         return view('admin.home', ['user' => $user]);
     }
@@ -70,8 +69,12 @@ class AdminController extends Controller
     public function edit($id)
     {
         $user = session('user');
-        $data = DB::table('gunpla')->where('id_g', $id)->first();
-        $unitType = DB::table('type')->where('id_t', $data->id_t)->first();
+
+        $datas = DB::select("SELECT * from gunpla WHERE id_g = :id",['id' =>$id]);
+        $data = $datas[0];
+
+        $unitTypes = DB::select("SELECT * from type WHERE id_t = :id",['id' =>$data->id_t]);
+        $unitType = $unitTypes[0];
         return view('admin.edit', ['user' => $user])->with(['data' => $data, 'unitType' => $unitType]);
     }
 
@@ -99,7 +102,9 @@ class AdminController extends Controller
             ]
         );
 
-        $data = DB::table('gunpla')->where('id_g', $id)->first();
+        $datas = DB::select('SELECT * FROM gunpla WHERE id_g = :id', ['id' => $id]
+        );
+        $data = $datas[0];
         $status = $data->status;
         if ($status == 'av'){ $rt = 'admin.index';}
         else {$rt = 'admin.bin';}
@@ -142,8 +147,58 @@ class AdminController extends Controller
                 'status' => 'nav'
             ]
         );
-        // DB::delete('DELETE FROM ice_cream WHERE id_ic = :id_v', ['id_v' => $id]);
         return redirect()->route('admin.index')->with('success', 'Unit '. $save_data .' has moved to recycle bin');
+    }
+
+    public function viewAccount()
+    {
+        $user = session('user');
+        $datas = DB::select("SELECT * FROM customer WHERE status = :status;", [ 'status' => 'active']);
+        $datas1 = DB::select("SELECT * FROM customer WHERE status = :status;", [ 'status' => 'not active']);
+        return view('admin.customerAccount',['user' => $user])->with(['datas'=> $datas, 'datas1' => $datas1]);
+    }
+
+    public function accountDeactivate($id)
+    {
+        $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
+        $data = $datas[0];
+        $save_data = $data->username;
+        DB::update('UPDATE customer SET status = :status WHERE id_c = :id',
+            [
+                'id' => $id,
+                'status' => 'not active'
+            ]
+        );
+        return redirect()->route('admin.customerAccount')->with('warning', 'Account '. $save_data .' has been DEACTIVATED');
+    }
+
+    public function accountActivate($id)
+    {
+        $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
+        $data = $datas[0];
+        $save_data = $data->username;
+        DB::update('UPDATE customer SET status = :status WHERE id_c = :id',
+            [
+                'id' => $id,
+                'status' => 'active'
+            ]
+        );
+        return redirect()->route('admin.customerAccount')->with('success', 'Account '. $save_data .' has been ACTIVATED');
+    }
+
+    public function accountDelete($id)
+    {
+        $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
+
+        $data = $datas[0];
+        $save_data = $data->username;
+    //        dd($data);
+        DB::delete('DELETE FROM customer WHERE id_c = :id',
+            [
+                'id' => $id
+            ]
+        );
+        return redirect()->route('admin.customerAccount')->with('danger', 'Account '. $save_data .' has been DELETED');
     }
 
 }

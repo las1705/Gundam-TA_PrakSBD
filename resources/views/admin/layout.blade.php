@@ -25,13 +25,16 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{route('admin.home')}}">Home</a>
+                    <a class="nav-link" aria-current="page" href="{{route('admin.home')}}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.index')}}">Index</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('admin.bin')}}">Recycle Bin</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{{route('admin.customerAccount')}}">Customer Account</a>
                 </li>
             </ul>
         </div>
@@ -42,7 +45,14 @@
                     {{ $user->username }}
                 </a>
                 <ul class="dropdown-menu">
-                    <li><a class="dropdown-item" href="{{route('login')}}">Logout</a></li>
+                    <li>
+{{--                        <form action="{{ route('logout') }}" method="post">--}}
+{{--                            @csrf--}}
+{{--                            <button type="submit" class="btn nav-link px-3 d-inline">Logout</button>--}}
+{{--                        </form>--}}
+                        <a class="dropdown-item" href="{{route('logout')}}">Logout</a>
+
+                    </li>
 
                 </ul>
             </div>

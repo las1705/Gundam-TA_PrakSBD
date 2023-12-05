@@ -29,7 +29,6 @@ class BinController extends Controller
                 'newStatus' => 'nav'
             ]
         );
-        // DB::delete('DELETE FROM ice_cream WHERE id_ic = :id_v', ['id_v' => $id]);
         return redirect()->route('admin.index')->with('success', 'All unit in recycle bin has been RESTORE');
     }
     public function restoreSingle($id)
@@ -44,7 +43,6 @@ class BinController extends Controller
                 'status' => 'av'
             ]
         );
-        // DB::delete('DELETE FROM ice_cream WHERE id_ic = :id_v', ['id_v' => $id]);
         return redirect()->route('admin.index')->with('success', 'Unit '. $save_data .' has been RESTORE');
     }
 

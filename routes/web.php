@@ -21,10 +21,14 @@ use App\Http\Controllers\CustomerController;
 Route::get('/', [Controller::class, 'viewLogin'])->name('login');
 Route::post('/', [Controller::class, 'auth'])->name('auth');
 
-Route::group(['middleware' => 'web'],function() {
+Route::get('/register', [Controller::class, 'viewRegister'])->name('register');
+Route::post('/verify', [Controller::class, 'verify'])->name('verify');
+
+Route::group(['middleware','check.login'],function() {
 
     Route::get('/adminHome', [AdminController::class, 'viewHome'])->name('admin.home');
     Route::get('/index', [AdminController::class, 'viewIndex'])->name('admin.index');
+    Route::get('/customerAccount', [AdminController::class, 'viewAccount'])->name('admin.customerAccount');
     Route::get('/bin', [BinController::class, 'viewBin'])->name('admin.bin');
 
     Route::get('/add-{status}', [AdminController::class, 'viewAdd'])->name('admin.add');
@@ -42,12 +46,22 @@ Route::group(['middleware' => 'web'],function() {
 
     Route::get('search-{status}', [AdminController::class, 'search'])->name('admin.search');
 
+    Route::post('deactivateAccount/{id}', [AdminController::class, 'accountDeactivate'])->name('admin.accountDeactivate');
+    Route::post('accountActivate/{id}', [AdminController::class, 'accountActivate'])->name('admin.accountActivate');
+    Route::post('accountDelete/{id}', [AdminController::class, 'accountDelete'])->name('admin.accountDelete');
+
     Route::get('/customerHome', [CustomerController::class, 'viewHomec'])->name('customer.home');
     Route::get('/customerHistory', [CustomerController::class, 'viewHistoryc'])->name('customer.history');
 
     Route::post('/buy/{product}-{user}', [CustomerController::class, 'buy'])->name('customer.buy');
 
     Route::get('searchc', [CustomerController::class, 'searchc'])->name('customer.search');
+
+    Route::get('/account/{id}', [CustomerController::class, 'viewAccount'])->name('customer.accountEdit');
+    Route::post('/accountUpadte/{id}', [CustomerController::class, 'updateAccount'])->name('customer.accountUpdate');
+    Route::post('accountSoftDelete/{id}', [CustomerController::class, 'accountSoftDelete'])->name('customer.accountSoftDelete');
+
+    Route::get('/logout', [Controller::class, 'logout'])->name('logout');
 
 });
 

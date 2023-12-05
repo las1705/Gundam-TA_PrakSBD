@@ -18,7 +18,7 @@
             </div>
         </form>
     </div>
-    <a href="{{ route('admin.add', ['status' => 'av']) }}" type="button" class="btn btn-primary rounded-3">Add New Gunpla</a>
+    <a href="{{ route('admin.add', ['status' => 'av']) }}" type="button" class="btn btn-primary rounded-3 mt-2">Add New Gunpla</a>
 
     <table class="table table-hover mt-2">
         <thead>
@@ -37,7 +37,7 @@
                 <td>{{ $data->id }}</td>
                 <td>{{ $data->name }}</td>
                 <td>{{ $data->type }}</td>
-                <td>{{ $data->price }}</td>
+                <td>{{ str_replace(',', '.', number_format($data->price)) }}</td>
 
                 <td>
                     <a href="{{ route('admin.edit', ['id' =>$data->id] ) }}" type="button"

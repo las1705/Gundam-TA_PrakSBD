@@ -25,7 +25,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="{{route('customer.home')}}">Home</a>
+                    <a class="nav-link" aria-current="page" href="{{route('customer.home')}}">Home</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="{{route('customer.history')}}">History</a>
@@ -39,9 +39,11 @@
                     {{ $user->username }}
                 </a>
                 <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="{{route('customer.accountEdit', ['id'=>$user->id_c])}}">Account </a></li>
                     <li><a class="dropdown-item" href="{{route('login')}}">Logout</a></li>
 
                 </ul>
+
             </div>
 
         </div>

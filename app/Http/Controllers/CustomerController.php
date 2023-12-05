@@ -77,5 +77,59 @@ class CustomerController extends Controller
         return view('customer.home', ['user' => $user])->with('datas', $datas);
     }
 
+    public function viewAccount($id)
+    {
+        $user = session('user');
+
+        $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
+        $data = $datas[0];
+
+        return view('customer.account', ['user' => $user])->with(['data' => $data]);
+    }
+
+    public function updateAccount($id, Request $request)
+    {
+        $request->validate([
+//            'id_g' => 'required',
+            'username' => 'required',
+            'password' => 'required',
+            'address' => 'required',
+            'contact' => 'required',
+        ]);
+
+        DB::update(
+            'UPDATE customer SET
+                     username = :username,
+                     password = :password,
+                     address = :address,
+                     contact = :contact
+                 WHERE id_c = :id',
+            [
+                'id' => $id,
+                'username' => $request->username,
+                'password' => $request->password,
+                'address' => $request->address,
+                'contact' => $request->contact
+            ]
+        );
+
+        return redirect()->route('customer.accountEdit', ['id'=>$id])->with('success', 'Data of your account changed is success');
+    }
+
+    public function accountSoftDelete($id)
+    {
+        $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
+        $data = $datas[0];
+        $save_data = $data->username;
+        DB::update(
+            'UPDATE customer SET status = :status WHERE id_c = :id',
+            [
+                'id' => $id,
+                'status' => 'not active'
+            ]
+        );
+        return redirect()->route('login')->with('warning', 'Account '. $save_data .' has NOT ACTIVED');
+    }
+
 
 }

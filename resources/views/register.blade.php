@@ -11,36 +11,31 @@
     <div class="row justify-content-center">
         <div class="col-md-6">
             <div class="card">
-                <div class="card-header">Login</div>
+                <div class="card-header">Register as Customer</div>
 
                 @if($message = Session::get('success'))
-                    <div class="alert alert-success mt-3" role="alert">
+                    <div class="alert alert-warning mt-3" role="alert">
                         {{ $message }}
                     </div>
                 @endif
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('auth') }}">
+                    <form method="POST" action="{{ route('verify') }}">
                         @csrf
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="role" id="customer" value="customer">
-                            <label class="form-check-label" for="customer">
-                                Login as Customer
-                            </label>
-                        </div>
-
-                        <div class="form-check">
-                            <input class="form-check-input" type="radio" name="role" id="admin" value="admin">
-                            <label class="form-check-label" for="admin">
-                                Login as Admin
-                            </label>
-                        </div>
-
 
                         <div class="form-group mt-3">
                             <label for="username">Username</label>
                             <input id="username" type="text" class="form-control" name="username" >
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="address">Address</label>
+                            <input id="address" type="text" class="form-control" name="address" >
+                        </div>
+
+                        <div class="form-group mt-3">
+                            <label for="contact">Contact</label>
+                            <input id="contact" type="text" class="form-control" name="contact" >
                         </div>
 
                         <div class="form-group">
@@ -48,9 +43,9 @@
                             <input id="password" type="password" class="form-control" name="password">
                         </div>
 
-                        <div class="form-group mb-0">
+                        <div class="form-group text-center mt-3">
                             <button type="submit" class="btn btn-primary">
-                                Login
+                                Register
                             </button>
 
                             @if (Route::has('password.request'))
@@ -68,7 +63,7 @@
         </div>
     </div>
     <div class="text-center mt-3">
-        <p><a class="link-opacity-100" href="{{route('register')}}">Register as Customer</a></p>
+        <p><a class="link-opacity-100" href="{{route('login')}}">Back to Login</a></p>
     </div>
 </div>
 </body>
