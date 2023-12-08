@@ -10,6 +10,10 @@ class CustomerController extends Controller
     public function viewHomec(Request $request)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $datas = DB::select("
             SELECT g.id_g AS id, g.name_g AS name, g.price AS price, t.name_t AS type
             FROM gunpla g LEFT JOIN type t
@@ -33,11 +37,8 @@ class CustomerController extends Controller
     }
 
     public function buy(Request $request, $product, $user){
-
-
         $request->validate([
             'quantity' => 'required',
-
         ]);
 
         if($request->quantity == null || $request->quantity == 0){
@@ -60,6 +61,10 @@ class CustomerController extends Controller
     public function searchc(Request $request)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $kw = $request->input('key');
         $skw = '%'.(string)$kw.'%';
         $datas = DB::select(
@@ -80,6 +85,9 @@ class CustomerController extends Controller
     public function viewAccount($id)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
 
         $datas = DB::select("SELECT * from customer WHERE id_c = :id",['id' =>$id]);
         $data = $datas[0];

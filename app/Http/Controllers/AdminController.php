@@ -11,12 +11,22 @@ class AdminController extends Controller
     public function viewHome(Request $request)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
+
+
         return view('admin.home', ['user' => $user]);
     }
 
     public function viewIndex()
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $datas = DB::select("
             SELECT g.id_g AS id, g.name_g AS name, g.price AS price, t.name_t AS type
             FROM gunpla g LEFT JOIN type t
@@ -29,6 +39,10 @@ class AdminController extends Controller
     public function viewAdd($status)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         return view('admin.add', ['user' => $user])->with('status', $status);
     }
 
@@ -69,6 +83,9 @@ class AdminController extends Controller
     public function edit($id)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
 
         $datas = DB::select("SELECT * from gunpla WHERE id_g = :id",['id' =>$id]);
         $data = $datas[0];
@@ -115,6 +132,10 @@ class AdminController extends Controller
     public function search(Request $request, $status)
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $kw = $request->input('key');
         $skw = '%'.(string)$kw.'%';
         $datas = DB::select(
@@ -153,6 +174,10 @@ class AdminController extends Controller
     public function viewAccount()
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $datas = DB::select("SELECT * FROM customer WHERE status = :status;", [ 'status' => 'active']);
         $datas1 = DB::select("SELECT * FROM customer WHERE status = :status;", [ 'status' => 'not active']);
         return view('admin.customerAccount',['user' => $user])->with(['datas'=> $datas, 'datas1' => $datas1]);

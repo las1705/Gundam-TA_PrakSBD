@@ -12,6 +12,10 @@ class BinController extends Controller
     public function viewBin()
     {
         $user = session('user');
+        if ($user == null){
+            abort(403);
+        }
+
         $datas = DB::select("
             SELECT g.id_g AS id, g.name_g AS name, g.price AS price, t.name_t AS type
             FROM gunpla g LEFT JOIN type t

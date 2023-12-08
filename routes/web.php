@@ -3,7 +3,6 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\BinController;
-use App\Http\Controllers\IceController;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\CustomerController;
 

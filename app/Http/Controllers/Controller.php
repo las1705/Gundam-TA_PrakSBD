@@ -42,9 +42,7 @@ class Controller extends BaseController
         if($data1->password != $request->password){
             return view('login')->with(['fail'=> 'Wrong Password']);
         }
-
         session(['user' => $data1]);
-
         return redirect()->intended($intend);
     }
 
@@ -61,6 +59,7 @@ class Controller extends BaseController
             'address' => 'required',
             'contact' => 'required',
         ]);
+//        $idc = 3;
 
         $datas = DB::select('SELECT * FROM customer WHERE username = :username;', ['username' => $request->username,]);
         if($datas != null){
@@ -71,21 +70,21 @@ class Controller extends BaseController
             'INSERT INTO customer(username,password, address, contact, status)
                     VALUES (:username, :password, :address, :contact, "active");',
             [
+
                 'username' => $request->username,
                 'password' => $request->password,
                 'address' => $request->address,
                 'contact' => $request->contact,
             ]
         );
+//        $idc += 1;
 
         return redirect()->route('login');
     }
 
     public function logout(Request $request)
     {
-
         session()->forget('user');
-
         return redirect('/');
     }
 
